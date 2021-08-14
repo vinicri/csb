@@ -1,7 +1,9 @@
+import "../styles/global.css";
+
 function App({ Component, pageProps }) {
   return (
     <div>
-      <p>Header</p>
+      <p>Headedddr</p>
       <Component {...pageProps} />
     </div>
   );

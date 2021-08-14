@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getTodos } from "../_api";
+import TodoItem from "../components/TodoItem";
+import { getTodos } from "../api";
 
 export default function IndexPage() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     getData();
   }, []);
@@ -37,14 +39,14 @@ export default function IndexPage() {
   if (todos.length === 0) {
     return (
       <div>
-        No todos yet. Start creating one <Link>here</Link>
+        No todos yet. Start creating one <Link href={"/add"}>here</Link>
       </div>
     );
   }
   return (
-    <div>
+    <div className="main">
       {todos.map((todo) => (
-        <div></div>
+        <TodoItem todo={todo} />
       ))}
     </div>
   );

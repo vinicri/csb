@@ -12,12 +12,14 @@ export default function IndexPage() {
 
   const getData = async () => {
     setError(null);
+    setLoading(true);
     try {
       const response = await getTodos();
       setTodos(response.data);
     } catch (e) {
       setError(e);
     }
+    setLoading(false);
   };
 
   if (error) {
@@ -29,12 +31,21 @@ export default function IndexPage() {
       </div>
     );
   }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (todos.length === 0) {
+    return (
+      <div>
+        No todos yet. Start creating one <Link>here</Link>
+      </div>
+    );
+  }
   return (
     <div>
-      Hello World.{" "}
-      <Link href="/about">
-        <a>Aut</a>
-      </Link>
+      {todos.map((todo) => (
+        <div></div>
+      ))}
     </div>
   );
 }

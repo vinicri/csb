@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getTodos } from "../api";
+import { getTodos } from "../_api";
 
 export default function IndexPage() {
   const [todos, setTodos] = useState([]);

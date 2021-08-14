@@ -1,16 +1,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import TodoItem from "../components/TodoItem";
 import { getTodos } from "../api";
+import TodosTable from "../components/TodosTable";
 
 export default function IndexPage() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const getData = async () => {
     setError(null);
@@ -24,30 +20,21 @@ export default function IndexPage() {
     setLoading(false);
   };
 
-  if (error) {
-    return (
-      <div>
-        <p>Oops! Error getting todos list.</p>
-        <button onClick={getData}>Try again</button>
-        <p>{error.message}</p>
-      </div>
-    );
-  }
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (todos.length === 0) {
-    return (
-      <div>
-        No todos yet. Start creating one <Link href={"/add"}>here</Link>
-      </div>
-    );
-  }
   return (
-    <div className="main">
-      {todos.map((todo) => (
-        <TodoItem todo={todo} />
-      ))}
+    <div className="p-5">
+      <button
+        className="rounded bg-gray-600 text-white text-lg p-3 w-full mb-3"
+        onClick={getData}
+      >
+        Get todos
+      </button>
+      {loading ? <div>Loading...</div> : null}
+      {error ? (
+        <div>
+          <p>Error loading the Todos list. Try again.</p>
+        </div>
+      ) : null}
+      {todos.length > 0 ? <TodosTable todos={todos} /> : null}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import TodoForm from "../components/TodoForm";
 import produce from "immer";
 import React from "react";
 import {
+  addTodo,
   setCompleted,
   sortByCompleted,
   sortById,
@@ -28,10 +29,18 @@ export default function IndexPage() {
   const [selected, setSelected] = useState({});
   const [filter, setFilter] = useState("");
 
-  const [sortBy, setSortBy] = useState("completedAsc");
+  const [sortBy, setSortBy] = useState("titleAsc");
 
   const toggleCompleted = (e, id) => {
     setTodos(setCompleted(todos, id, e.target.checked));
+  };
+
+  const handleAdd = (newTodo) => {
+    const list = produce(addTodo(todos, newTodo), (draft) => {
+      draft.sort(sortByMap[sortBy]);
+    });
+
+    setTodos(list);
   };
 
   const toggleSelected = (e, id) => {
@@ -127,7 +136,7 @@ export default function IndexPage() {
           Delete selected todos
         </button>
       )}
-      <TodoForm />
+      <TodoForm onSubmit={handleAdd} />
       {todos.length > 0 ? (
         <TodosTable
           updateSortBy={updateSortBy}

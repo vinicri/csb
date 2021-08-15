@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getTodos } from "../api";
 import TodosTable from "../components/TodosTable";
 import TodoForm from "../components/TodoForm";
@@ -32,6 +32,7 @@ export default function IndexPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selected, setSelected] = useState({});
+  const [filter, setFilter] = useState("");
 
   const [sortBy, setSortBy] = useState("completedAsc");
 
@@ -105,6 +106,17 @@ export default function IndexPage() {
     }
   };
 
+  const filteredTodos = useMemo(() => {
+    if (!filter) {
+      return todos;
+    } else {
+      const regex = new RegExp(filter, "i");
+      return todos.filter((i) => {
+        return regex.test(i.title);
+      });
+    }
+  }, [todos, filter]);
+
   return (
     <div className="p-5">
       <button
@@ -113,6 +125,11 @@ export default function IndexPage() {
       >
         Get todsd
       </button>
+      <input
+        onChange={(e) => setFilter(e.target.value)}
+        value={filter}
+        className="rounder border border-gray-200 text-lg p-3 w-full"
+      />
       {loading ? <div>Loading...</div> : null}
       {error ? (
         <div>
@@ -132,7 +149,7 @@ export default function IndexPage() {
       {todos.length > 0 ? (
         <TodosTable
           updateSortBy={updateSortBy}
-          todos={todos}
+          todos={filteredTodos}
           toggleCompleted={toggleCompleted}
           selected={selected}
           toggleSelected={toggleSelected}

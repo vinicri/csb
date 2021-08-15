@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import TodoItem from "./TodoItem";
 import React from "react";
 
@@ -12,5 +12,6 @@ const todo = {
 describe("test TodoItem component", () => {
   it("renders", () => {
     render(<TodoItem todo={todo} />);
+    expect(screen.getByText(todo.title)).toBeDefined();
   });
 });

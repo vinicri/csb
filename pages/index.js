@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getTodos } from "../api";
 import TodosTable from "../components/TodosTable";
 

@@ -5,18 +5,12 @@ import TodosTable from "../components/TodosTable";
 import TodoForm from "../components/TodoForm";
 import produce from "immer";
 import React from "react";
-
-const sortByCompleted = (asc = true) => (a, b) => {
-  return (asc ? 1 : -1) * (a.completed - b.completed);
-};
-
-const sortById = (asc = true) => (a, b) => {
-  return (asc ? 1 : -1) * (a.id - b.id);
-};
-
-const sortByTitle = (asc = true) => (a, b) => {
-  return asc ? a.title > b.title : a.title < b.title;
-};
+import {
+  setCompleted,
+  sortByCompleted,
+  sortById,
+  sortByTitle
+} from "../operations";
 
 const sortByMap = {
   completedAsc: sortByCompleted(),
@@ -37,14 +31,7 @@ export default function IndexPage() {
   const [sortBy, setSortBy] = useState("completedAsc");
 
   const toggleCompleted = (e, id) => {
-    e.persist();
-    setTodos(
-      produce(todos, (draft) => {
-        const found = draft.find((i) => i.id === id);
-        found.completed = e.target.checked;
-        draft.sort(sortByMap[sortBy]);
-      })
-    );
+    setTodos(setCompleted(todos, id, e.target.checked));
   };
 
   const toggleSelected = (e, id) => {
@@ -62,16 +49,11 @@ export default function IndexPage() {
 
   const deleteSelected = () => {
     const selectedIds = Object.keys(selected).map((i) => parseInt(i));
-    //console.log(selectedIds);
 
     const newTodos = todos.filter((i) => {
       return !selectedIds.includes(i.id);
     });
-    // setTodos(
-    //   produce(todos, (draft) => {
-    //     return draft.filter((i) => !selectedIds.includes(i.id));
-    //   })
-    // );
+
     setTodos(newTodos);
     setSelected({});
   };

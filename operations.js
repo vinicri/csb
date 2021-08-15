@@ -7,5 +7,6 @@ export const sortById = (asc = true) => (a, b) => {
 };
 
 export const sortByTitle = (asc = true) => (a, b) => {
-  return asc ? a.title > b.title : a.title < b.title;
+  const result = a.title > b.title ? 1 : -1;
+  return asc ? result : -1 * result;
 };

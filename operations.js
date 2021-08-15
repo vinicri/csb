@@ -46,9 +46,3 @@ export const sortByTitle = (asc = true) => (a, b) => {
   const result = a.title > b.title ? 1 : -1;
   return asc ? result : -1 * result;
 };
-
-export const twoLevelsSort = (todos, firstSort, secondSort) => {
-  return produce(todos, (draft) => {
-    draft.sort(firstSort);
-  });
-};

@@ -4,6 +4,7 @@ import { getTodos } from "../api";
 import TodosTable from "../components/TodosTable";
 import TodoForm from "../components/TodoForm";
 import produce from "immer";
+import React from "react";
 
 const sortByCompleted = (asc = true) => (a, b) => {
   return (asc ? 1 : -1) * (a.completed - b.completed);

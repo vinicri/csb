@@ -80,7 +80,11 @@ export default function IndexPage() {
     try {
       const response = await getTodos();
       console.log(sortBy);
-      setTodos(response.data.sort(sortByMap[sortBy]));
+      setTodos(
+        response.data.sort((a, b) => {
+          return a.completed - b.completed || (a.title > b.title ? 1 : -1);
+        })
+      );
     } catch (e) {
       setError(e);
     }

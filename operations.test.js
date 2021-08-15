@@ -1,6 +1,14 @@
-import { sortByCompleted, sortByTitle, sortById } from "./operations";
+import {
+  sortByCompleted,
+  sortByTitle,
+  sortById,
+  deleteSelected,
+  addTodo,
+  setCompleted,
+  editTodo
+} from "./operations";
 
-const todos = [
+const data = [
   {
     userId: 1,
     id: 1,
@@ -28,6 +36,11 @@ const todos = [
 ];
 
 describe("operations tests", () => {
+  let todos = [];
+  beforeEach(() => {
+    todos = [...data];
+  });
+
   it("should pass", () => {});
 
   it("should sort by completed ascending", () => {
@@ -92,6 +105,52 @@ describe("operations tests", () => {
 
     todos.forEach((todo, index) => {
       expect(todo.id).toBe(expectedIdOrder[index]);
+    });
+  });
+
+  it("should delete all todos and keep original array intact", () => {
+    const result = deleteSelected(todos, [1, 2, 3, 4]);
+    expect(result.length).toBe(0);
+    expect(todos.length).toBe(4);
+  });
+
+  it("should add a new todo and keep original array intact", () => {
+    const newTodo = {
+      id: 5,
+      title: "hello hello",
+      completed: false
+    };
+
+    const results = addTodo(todos, newTodo);
+    expect(todos.length).toBe(4);
+    expect(results.length).toBe(5);
+    expect(results.find((i) => i.id === 5)).toBe(newTodo);
+  });
+
+  it("should edit a todo and keep original array intact", () => {
+    const editedTodo = {
+      id: 4,
+      title: "hello hello",
+      completed: false
+    };
+
+    const results = editTodo(todos, editedTodo);
+    expect(todos.length).toBe(4);
+    expect(results.length).toBe(4);
+    expect(results.find((i) => i.id === 4).title).toBe("hello hello");
+    expect(todos.find((i) => i.id === 4).title).toBe("et porro tempora");
+  });
+
+  it("should set todo completed", () => {
+    const result = setCompleted(todos, 2, true);
+    todos.forEach((i, index) => {
+      if (i.id !== 2) {
+        expect(i).toEqual(result[index]);
+      } else {
+        expect(i.title).toBe(result[index].title);
+        expect(i.completed).toBe(false);
+        expect(result[index].completed).toBe(true);
+      }
     });
   });
 });

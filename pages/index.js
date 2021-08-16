@@ -28,12 +28,14 @@ export default function IndexPage() {
       >
         Get todos
       </button>
-      {loading ? <div>Loading...</div> : null}
-      {error ? (
+      {loading && <div>Loading...</div>}
+      {error && (
         <div>
-          <p>Error loading the Todos list. Try again.</p>
+          <p data-testid="error-message">
+            Error loading the Todos list. Try again.
+          </p>
         </div>
-      ) : null}
+      )}
       {todos.length > 0 ? <TodosTable todos={todos} /> : null}
     </div>
   );
